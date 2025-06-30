@@ -64,3 +64,48 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+.review-swiper-pagination .swiper-pagination-progressbar-fill {
+    background: #18181b;
+    /* Warna hitam/abu-abu gelap */
+    height: 3px;
+}
+
+.review-swiper-pagination.swiper-pagination-progressbar {
+    background: #e5e7eb;
+    /* Warna abu-abu terang */
+    height: 3px;
+}
+
+.dark .review-swiper-pagination .swiper-pagination-progressbar-fill {
+    background: #ffffff;
+    /* Warna putih di dark mode */
+}
+
+.dark .review-swiper-pagination.swiper-pagination-progressbar {
+    background: #3f3f46;
+    /* Warna abu-abu gelap di dark mode */
+}
+
+.lapangan-slider .swiper-button-next,
+.lapangan-slider .swiper-button-prev {
+    color: #b91c1c;
+    /* Tailwind red-700 */
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 9999px;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+}
+
+.lapangan-slider .swiper-button-next:after,
+.lapangan-slider .swiper-button-prev:after {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.lapangan-slider .swiper-button-next:hover,
+.lapangan-slider .swiper-button-prev:hover {
+    background: #b91c1c;
+    color: #fff;
+}

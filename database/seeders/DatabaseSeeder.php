@@ -28,8 +28,8 @@ public function run(): void
             CategorySeeder::class,
             FieldSeeder::class,
             FieldScheduleSeeder::class,
-            MembershipSeeder::class,
-            BookingSeeder::class,
+            // MembershipSeeder::class,
+            // BookingSeeder::class,
         ]);
     }
 }

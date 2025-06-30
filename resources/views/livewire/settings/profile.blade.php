@@ -67,9 +67,10 @@ new class extends Component {
 
         Session::flash('status', 'verification-link-sent');
     }
-}; ?>
+}; 
+?>
 
-<section class="w-full">
+<section class="w-full py-6">
     @include('partials.settings-heading')
 
     <x-settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
@@ -79,7 +80,7 @@ new class extends Component {
             <div>
                 <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
 
-                @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail &&! auth()->user()->hasVerifiedEmail())
+                @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !auth()->user()->hasVerifiedEmail())
                     <div>
                         <flux:text class="mt-4">
                             {{ __('Your email address is unverified.') }}
@@ -109,6 +110,6 @@ new class extends Component {
             </div>
         </form>
 
-        <livewire:settings.delete-user-form />
+        {{-- <livewire:settings.delete-user-form /> --}}
     </x-settings.layout>
 </section>

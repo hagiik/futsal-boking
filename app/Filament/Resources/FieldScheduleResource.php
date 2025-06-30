@@ -31,7 +31,7 @@ class FieldScheduleResource extends Resource
     public static ?string $navigationGroup = 'Manajemen Lapangan';
     protected static ?string $navigationLabel = 'Jadwal Lapangan';
     protected static ?string $slug = 'jadwal-lapangan';
-    protected static ?int $navigationSort = 1;
+    // protected static ?int $navigationSort = 1;
     /*
         * Get the label for the model.
         *

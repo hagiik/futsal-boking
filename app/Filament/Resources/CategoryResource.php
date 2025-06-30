@@ -25,7 +25,7 @@ class CategoryResource extends Resource
     protected static ?string $navigationGroup = 'Manajemen Lapangan';
     protected static ?string $navigationLabel = 'Kategori';
     protected static ?string $slug = 'kategori';
-    protected static ?int $navigationSort = 3;
+    // protected static ?int $navigationSort = 3;
     public static function getPluralModelLabel(): string
     {
         return 'Kategori'; 

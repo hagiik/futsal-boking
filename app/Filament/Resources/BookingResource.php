@@ -20,6 +20,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -165,7 +166,7 @@ class BookingResource extends Resource
                     ->sortable()
                     ->badge()
                     ->icon('heroicon-o-calendar-days')
-                    ->dateTime('d-m-Y'),
+                    ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('l, d-m-Y')),
                 TextColumn::make('start_time')
                     ->label('Mulai')
                     ->badge()
@@ -178,15 +179,32 @@ class BookingResource extends Resource
                     ->icon('heroicon-o-clock')
                     ->color('warning')
                     ->time(),
-                TextColumn::make('status')
+                SelectColumn::make('status')
                     ->label('Status')
-                    ->badge()
-                    ->colors([
-                        'gray' => 'pending',
-                        'success' => 'confirmed',
-                        'danger' => 'cancelled',
-                        'info' => 'completed',
+                    ->options([
+                        'pending' => 'Pending',
+                        'confirmed' => 'Confirmed',
+                        'cancelled' => 'Cancelled',
+                        'completed' => 'Completed',
                     ]),
+                TextColumn::make('payment.method')
+                    ->label('Metode Pembayaran')
+                    ->searchable()
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => ucfirst($state))
+                    ->icon(fn ($state) => match ($state) {
+                        'qris' => 'heroicon-o-device-phone-mobile',
+                        'transfer' => 'heroicon-o-arrow-path',
+                        'cash' => 'heroicon-o-banknotes',
+                        default => 'heroicon-o-question-mark-circle',
+                    })
+                    ->color(fn ($state) => match ($state) {
+                        'qris' => 'success',
+                        'transfer' => 'info',
+                        'cash' => 'warning',
+                        default => 'secondary',
+                    })
+                    ->sortable(),
                 TextColumn::make('total_price')
                     ->label('Total')
                     ->badge()
@@ -198,7 +216,7 @@ class BookingResource extends Resource
                 
             ])
             // ->defaultSort('status', 'asc')
-            ->defaultSort('status')
+            // ->defaultSort('status')
             ->filters([
                 SelectFilter::make('status')
                     ->options([

@@ -22,7 +22,7 @@ class FasilitasResource extends Resource
     public static ?string $navigationGroup = 'Manajemen Lapangan';
     protected static ?string $navigationLabel = 'Fasilitas';
     protected static ?string $slug = 'fasilitas';
-    protected static ?int $navigationSort = 2;
+    // protected static ?int $navigationSort = 2;
     /*
         * Get the label for the model.
         *

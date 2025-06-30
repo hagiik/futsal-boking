@@ -77,17 +77,24 @@ class UserResource extends Resource
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()
+                    ->icon('heroicon-o-envelope')
+                    ->badge(),
                 TextColumn::make('roles.name')
                     ->label('Role')
                     ->searchable()
                     ->sortable()
                     ->badge(),
-                IconColumn::make('email_verified_at')
-                    ->boolean()
+                TextColumn::make('email_verified_at')
                     ->label('Email Verifikasi')
-                    ->trueIcon('heroicon-o-check-badge')
-                    ->falseIcon('heroicon-o-x-mark'),
+                    ->sortable()
+                    ->badge()
+                    ->getStateUsing(fn ($record) => $record->email_verified_at !== null)
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Terverifikasi' : 'Belum Terverifikasi')
+                    ->icon(fn (bool $state): string => $state ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle')
+                    ->iconPosition('before')
+                    ->color(fn (bool $state): string => $state ? 'success' : 'danger'),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -15,7 +15,11 @@ class Booking extends Model
         'user_id', 'field_id', 'booking_date',
         'start_time', 'end_time', 'status',
         'total_price', 'verification_sent',
-        'booking_number'
+        'booking_number','expires_at',
+    ];
+
+    protected $casts = [
+        'expires_at' => 'datetime',
     ];
     protected static function booted()
     {

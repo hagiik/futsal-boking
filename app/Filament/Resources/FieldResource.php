@@ -38,7 +38,7 @@ class FieldResource extends Resource
     public static ?string $navigationGroup = 'Manajemen Lapangan';
     protected static ?string $navigationLabel = 'Lapangan';
     protected static ?string $slug = 'lapangan';
-    protected static ?int $navigationSort = 0;
+    // protected static ?int $navigationSort = 0;
     /*
         * Get the label for the model.
         *

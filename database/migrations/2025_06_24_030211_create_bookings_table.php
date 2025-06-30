@@ -21,6 +21,7 @@ return new class extends Migration
             $table->time('end_time');
             $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed'])->default('pending');
             $table->decimal('total_price', 12, 2);
+            $table->timestamp('expires_at')->nullable();
             $table->boolean('verification_sent')->default(false)->nullable();
             $table->timestamps();
             $table->softDeletes();
