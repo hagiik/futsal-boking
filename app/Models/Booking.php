@@ -21,18 +21,6 @@ class Booking extends Model
     protected $casts = [
         'expires_at' => 'datetime',
     ];
-    protected static function booted()
-    {
-        static::creating(function ($booking) {
-            // Format: BK-YYYYMMDD-xxxxx
-            $date = now()->format('Ymd');
-            $lastNumber = DB::table('bookings')
-                ->whereDate('created_at', now()->toDateString())
-                ->count() + 1;
-
-            $booking->booking_number = 'BK-' . $date . '-' . str_pad($lastNumber, 5, '0', STR_PAD_LEFT);
-        });
-    }
     public function user()
     {
         return $this->belongsTo(User::class);

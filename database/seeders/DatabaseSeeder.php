@@ -28,6 +28,7 @@ public function run(): void
             CategorySeeder::class,
             FieldSeeder::class,
             FieldScheduleSeeder::class,
+            FacilitySeeder::class,
             // MembershipSeeder::class,
             // BookingSeeder::class,
         ]);

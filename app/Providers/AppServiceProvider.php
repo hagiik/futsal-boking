@@ -21,8 +21,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        if (env('NGROK_ACTIVE', false)) {
-            URL::forceScheme('https');
-        }
+        // if (env('NGROK_ACTIVE', false)) {
+        //     URL::forceScheme('https');
+        // }
     }
 }

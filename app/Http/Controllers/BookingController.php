@@ -12,8 +12,6 @@ use Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
-// app/Http/Controllers/BookingController.php
-
     public function pay(Request $request)
     {
         $validated = $request->validate([
@@ -27,8 +25,16 @@ class BookingController extends Controller
         try {
             $expiryDuration = 2; // Durasi dalam menit
 
+            $usernameSlug = Str::slug(Auth::user()->name);
+            $today = now()->format('Ymd');
+            $bookingCountToday = Booking::whereDate('created_at', now())->count() + 1;
+            $bookingSequence = str_pad($bookingCountToday, 5, '0', STR_PAD_LEFT);
+            $randomUnique = Str::random(8);
+            $bookingNumber = "BK-{$today}-{$bookingSequence}-{$usernameSlug}-{$randomUnique}";
+
+
             $booking = Booking::create([
-                'booking_number' => 'BOOK-' . strtoupper(Str::random(8)),
+                'booking_number' => $bookingNumber,
                 'user_id' => Auth::id(),
                 'field_id' => $validated['field_id'],
                 'booking_date' => $validated['booking_date'],
@@ -84,11 +90,6 @@ class BookingController extends Controller
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
         
         try {
-            // =================================================================
-            //                   PERBAIKAN UTAMA ADA DI SINI
-            // Biarkan konstruktornya kosong. SDK Midtrans akan otomatis membaca
-            // input stream dari request yang masuk.
-            // =================================================================
             $notification = new \Midtrans\Notification();
 
         } catch (\Exception $e) {
@@ -146,4 +147,15 @@ class BookingController extends Controller
 
         return response()->json(['snap_token' => $snapToken]);
     }
+
+    public function success($booking_number)
+    {
+        $booking = Booking::where('booking_number', $booking_number)
+            ->where('user_id', Auth::id())
+            ->with(['field.category', 'payment'])
+            ->firstOrFail();
+
+        return view('pages.lapangan.success-payment', compact('booking'));
+    }
+
 }

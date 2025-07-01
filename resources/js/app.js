@@ -12,3 +12,5 @@ new Swiper('.lapangan-slider', {
 });
 });
 
+import { createIcons, icons } from 'lucide';
+createIcons({ icons });

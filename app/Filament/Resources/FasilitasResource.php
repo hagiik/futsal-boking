@@ -43,8 +43,10 @@ class FasilitasResource extends Resource
                 TextInput::make('name')
                     ->label('Nama Fasilitas')
                     ->required()
-                    ->columnSpanFull()
                     ->maxLength(255),
+                TextInput::make('icon')
+                    ->label('Ikon')
+                    ->required()
             ]);
     }
 
@@ -55,6 +57,11 @@ class FasilitasResource extends Resource
                 TextColumn::make('name')
                     ->label('Nama Fasilitas')
                     ->searchable()
+                    ->sortable(),
+                TextColumn::make('icon')
+                    ->label('Ikon')
+                    // ->formatStateUsing(fn ($state) => '<i class="' . $state . '"></i>')
+                    // ->html()
                     ->sortable(),
             ])
             ->filters([

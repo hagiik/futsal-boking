@@ -14,6 +14,12 @@ Route::get('/', function () {
 Route::get('/lapangan', [LapanganController::class, 'index'])->name('lapangan');
 Route::get('/lapangan/{slug}', [LapanganController::class, 'show'])->name('lapangan.show');
 
+Route::get('/payment-success', [BookingController::class, 'afterPayment'])->name('after.payment');
+Route::get('/booking/success/{booking_number}', [BookingController::class, 'success'])->name('booking.success');
+Route::get('/booking/{booking}/retry-payment', [BookingController::class, 'retryPayment'])
+    ->name('booking.retry')
+    ->middleware('auth');
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -31,14 +37,8 @@ Route::get('settings/pesanan', [ProfileController::class, 'showlist'])->name('pr
 Route::post('/booking/pay', [BookingController::class, 'pay'])->name('booking.pay')->middleware('auth');
 
 
-
 Route::post('/midtrans/webhook', [BookingController::class, 'webhook'])->name('midtrans.webhook');
 
-
-// routes/web.php
-Route::get('/booking/{booking}/retry-payment', [BookingController::class, 'retryPayment'])
-    ->name('booking.retry')
-    ->middleware('auth');
 
 
 require __DIR__.'/auth.php';
