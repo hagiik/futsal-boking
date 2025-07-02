@@ -19,6 +19,7 @@ use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -28,6 +29,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
+use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
 class BookingResource extends Resource
 {
@@ -54,7 +56,6 @@ class BookingResource extends Resource
                                 ->required()
                                 ->createOptionModalHeading('Buat User Baru')
                                 ->createOptionForm([
-                                    // ... form create user Anda dari sebelumnya ...
                                     TextInput::make('name')->label('Nama Lengkap')->required(),
                                     TextInput::make('email')->label('Alamat Email')->email()->required()->unique('users', 'email'),
                                     TextInput::make('phone')->label('Nomor Telepon')->tel()->numeric(),
@@ -215,7 +216,7 @@ class BookingResource extends Resource
                     ->money('IDR', true),
                 
             ])
-            // ->defaultSort('status', 'asc')
+            ->defaultSort('status', 'asc')
             // ->defaultSort('status')
             ->filters([
                 SelectFilter::make('status')
@@ -224,7 +225,17 @@ class BookingResource extends Resource
                         'confirmed' => 'Confirmed',
                         'cancelled' => 'Cancelled',
                         'completed' => 'Completed',
+                    ]),
+                Filter::make('booking_date')
+                    ->form([
+                        DatePicker::make('start_date')->label('Dari Tanggal'),
+                        DatePicker::make('end_date')->label('Sampai Tanggal'),
                     ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['start_date'], fn ($q) => $q->whereDate('booking_date', '>=', $data['start_date']))
+                            ->when($data['end_date'], fn ($q) => $q->whereDate('booking_date', '<=', $data['end_date']));
+                    }),
             ])
             ->actions([
                 Tables\Actions\Action::make('Verifikasi')
@@ -265,6 +276,7 @@ class BookingResource extends Resource
 
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                ActivityLogTimelineTableAction::make('Activities')
 
             ])
             ->bulkActions([

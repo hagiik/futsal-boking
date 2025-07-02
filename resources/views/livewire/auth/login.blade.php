@@ -29,7 +29,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -48,7 +48,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
      */
     protected function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -69,12 +69,17 @@ new #[Layout('components.layouts.auth')] class extends Component {
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
     }
 }; ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+    <a href="{{ route('home') }}" class="relative z-20 flex items-center text-lg font-medium" wire:navigate>
+        <span class="flex items-center justify-center rounded-md">
+            <img src="{{asset('images/GilSports1.png')}}" alt="Logo">
+        </span>
+    </a>
+    <x-auth-header :title="__('Masuk Ke Akun Anda')" :description="__('Masukkan email dan kata sandi Anda di bawah ini untuk masuk')" />
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
@@ -83,7 +88,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <!-- Email Address -->
         <flux:input
             wire:model="email"
-            :label="__('Email address')"
+            :label="__('Email')"
             type="email"
             required
             autofocus
@@ -95,33 +100,36 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <div class="relative">
             <flux:input
                 wire:model="password"
-                :label="__('Password')"
+                :label="__('Kata Sandi')"
                 type="password"
                 required
                 autocomplete="current-password"
-                :placeholder="__('Password')"
+                :placeholder="__('Kata Sandi')"
                 viewable
             />
 
             @if (Route::has('password.request'))
                 <flux:link class="absolute end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
-                    {{ __('Forgot your password?') }}
+                    {{ __('Lupa Kata Sandi?') }}
                 </flux:link>
             @endif
         </div>
 
         <!-- Remember Me -->
-        <flux:checkbox wire:model="remember" :label="__('Remember me')" />
+        {{--
+        <flux:checkbox wire:model="remember" :label="__('Remember me')" /> --}}
 
         <div class="flex items-center justify-end">
-            <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
+            <flux:button variant="primary" type="submit" class="w-full bg-lime-500 hover:bg-lime-600">{{ __('Log in') }}
+            </flux:button>
         </div>
     </form>
 
     @if (Route::has('register'))
         <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
             {{ __('Don\'t have an account?') }}
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+            <flux:link :href="route('register')" class="text-lime-500 hover:text-lime-600" wire:navigate>{{ __('Sign up') }}
+            </flux:link>
         </div>
     @endif
 </div>

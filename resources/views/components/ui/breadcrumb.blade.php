@@ -1,4 +1,4 @@
-<div class=" bg-red-800 text-white py-4 px-4 sm:px-6 lg:px-8">
+<div class=" bg-lime-500 text-white py-4 px-4 sm:px-6 lg:px-8">
     <nav class="text-sm container mx-auto" aria-label="Breadcrumb">
         <ol class="flex flex-wrap items-center space-x-1 sm:space-x-2">
             @foreach ($items as $item)

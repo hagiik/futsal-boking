@@ -55,6 +55,7 @@ class FieldScheduleResource extends Resource
 
             CheckboxList::make('days')
                 ->label('Hari')
+                ->bulkToggleable()
                 ->options([
                     'Monday' => 'Senin',
                     'Tuesday' => 'Selasa',

@@ -86,6 +86,7 @@ public static function form(Form $form): Form
                         FileUpload::make('image')
                             ->label('Gambar Lapangan')
                             ->image()
+                            ->imageEditor()
                             ->multiple()
                             ->disk('public')
                             ->directory('lapangan')
@@ -105,7 +106,8 @@ public static function form(Form $form): Form
                         CheckboxList::make('facilities')
                             ->label('Daftar Fasilitas')
                             ->relationship('facilities', 'name')
-                            ->searchable(),
+                            ->searchable()
+                            ->bulkToggleable(),
                     ]),
                 ])
                 ->columnSpan(1),

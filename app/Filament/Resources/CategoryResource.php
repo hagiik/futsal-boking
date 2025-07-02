@@ -43,6 +43,7 @@ class CategoryResource extends Resource
                 
                 TextInput::make('slug')
                     ->required()
+                    ->readOnly()
                     ->maxLength(255)
                     ->helperText('Slug akan terisi otomatis setelah mengisi nama Kategori')
                     ->unique(Category::class, 'slug', ignoreRecord: true),

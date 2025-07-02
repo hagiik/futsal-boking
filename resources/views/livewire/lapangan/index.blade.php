@@ -7,10 +7,13 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
                     </svg>
                 </div>
-                <input type="text" wire:model.live.debounce.500ms="searchName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full ps-10 p-2.5 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-gray-400 dark:text-white" placeholder="Cari nama venue...">
+                <input type="text" wire:model.live.debounce.500ms="searchName"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-lime-500 focus:border-lime-500 block w-full ps-10 p-2.5 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-gray-400 dark:text-white"
+                    placeholder="Cari nama venue...">
             </div>
             <div x-data="{ open: false, selectedLabel: 'Semua Olahraga' }" class="relative" @click.away="open = false">
-                <button @click="open = !open" class="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full p-2.5 text-left flex items-center dark:bg-zinc-700 dark:border-zinc-600 dark:text-white">
+                <button @click="open = !open"
+                    class="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-lime-500 focus:border-lime-500 w-full p-2.5 text-left flex items-center dark:bg-zinc-700 dark:border-zinc-600 dark:text-white">
                     <div class="inset-y-0 start-0 flex items-center pe-2">
                         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 4v10m0 0a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m0 0v2m6-16v2m0 0a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m0 0v10m6-16v10m0 0a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m0 0v2"/>
@@ -51,7 +54,7 @@
             </div>
 
 
-            <button class="w-full bg-red-700 text-white font-semibold p-2.5 rounded-lg hover:bg-red-800 transition">
+            <button class="w-full bg-lime-500 text-white font-semibold p-2.5 rounded-lg hover:bg-lime-600 transition">
                 Cari Venue
             </button>
         </div>
@@ -64,7 +67,7 @@
     <div class="container mx-auto px-6 py-4" wire:loading.remove>
         <div class=" mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" >
             @forelse($fields as $field)
-                <div class="bg-white dark:bg-zinc-800 border border-gray-100 shadow-sm dark:border-zinc-700 rounded-xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" 
+                <div class="bg-white dark:bg-zinc-800 shadow-sm dark:border-zinc-700 rounded-xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border-1 border-lime-500"
                 data-aos="fade-up"
                 data-aos-delay="{{ ($loop->index % 3) * 100 + 100 }}">
                 <a href="{{ route('lapangan.show', $field->slug) }}">
@@ -82,8 +85,9 @@
                         @endif
                     </div>
                     <div class="p-6">
-                        <a href="{{ route('lapangan.show', $field->slug) }}" class="text-xl font-bold text-gray-900 dark:text-white">{{ $field->name }}</a>
-                        <h4 class="text-sm font-medium text-gray-300 dark:text-white"> {{ $field->category->name }}</h4>
+                        <a href="{{ route('lapangan.show', $field->slug) }}"
+                            class="text-xl font-bold text-lime-500 dark:text-white">{{ $field->name }}</a>
+                        <h4 class="text-xs font-medium text-gray-500 dark:text-white"> {{ $field->category->name }}</h4>
                         <p class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                             {{ Str::limit($field->description, 100) }}
                         </p>
@@ -91,8 +95,18 @@
                 </a>
                 </div>
             @empty
-                <div class="md:col-span-3 text-center py-12">
-                     <p class="text-gray-500 dark:text-gray-400">Venue tidak ditemukan. Coba ubah filter pencarian Anda.</p>
+                <div class="md:col-span-3 text-center py-16 flex flex-col items-center justify-center">
+
+                    <img src="{{asset('images/search.svg')}}" alt="Ikon Pencarian" class="w-40 h-40 mb-4">
+
+                    <h3 class="mt-4 text-xl font-semibold text-gray-800 dark:text-gray-200">
+                        Venue Tidak Ditemukan
+                    </h3>
+
+                    <p class="mt-2 text-gray-500 dark:text-gray-400">
+                        Coba gunakan kata kunci atau filter pencarian yang berbeda.
+                    </p>
+
                 </div>
             @endforelse
         </div>

@@ -63,6 +63,9 @@ class BookingController extends Controller
                     'unit' => 'minute',
                     'duration' => $expiryDuration,
                 ],
+                'callbacks' => [
+                    'finish' => route('booking.success', ['booking_number' => $booking->booking_number]),
+                ]
             ];
 
             $snapToken = \Midtrans\Snap::getSnapToken($params);

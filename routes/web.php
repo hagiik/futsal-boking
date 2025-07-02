@@ -12,7 +12,7 @@ Route::get('/', function () {
 
 
 Route::get('/lapangan', [LapanganController::class, 'index'])->name('lapangan');
-Route::get('/lapangan/{slug}', [LapanganController::class, 'show'])->name('lapangan.show');
+Route::get('/lapangan/{slug}.ez', [LapanganController::class, 'show'])->name('lapangan.show');
 
 Route::get('/payment-success', [BookingController::class, 'afterPayment'])->name('after.payment');
 Route::get('/booking/success/{booking_number}', [BookingController::class, 'success'])->name('booking.success');
