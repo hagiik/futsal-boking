@@ -20,6 +20,28 @@
 
         <div class="flex items-center space-x-4">
             <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle" aria-label="Toggle dark mode" />
+            <a href="{{ route('cart.index') }}"
+                class="relative text-gray-600 dark:text-gray-300 hover:text-lime-600 dark:hover:text-lime-500">
+                {{-- Hitung jumlah item di cart dari session --}}
+                @php
+                    $cartCount = count(session('cart', []));
+                @endphp
+            
+                {{-- Ikon SVG untuk keranjang belanja --}}
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                    </path>
+                </svg>
+            
+                {{-- Tanda notifikasi, hanya muncul jika cartCount > 0 --}}
+                @if($cartCount > 0)
+                    <span
+                        class="absolute -top-2 -right-2 flex items-center justify-center h-5 w-5 rounded-full bg-red-500 text-white text-xs font-bold">
+                        {{ $cartCount }}
+                    </span>
+                @endif
+            </a>
             <div class="h-6 w-px bg-zinc-300 dark:bg-zinc-600"></div>
                 @guest
                     <div class="flex items-center space-x-4">

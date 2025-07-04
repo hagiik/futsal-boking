@@ -108,6 +108,27 @@ class BookingScheduler extends Component
         return $total;
     }
 
+    public function addToCart()
+    {
+        if (empty($this->selectedTimeSlots)) {
+            return;
+        }
+
+        $cartItem = [
+            'field_id'      => $this->field->id,
+            'field_name'    => $this->field->name,
+            'field_image'   => $this->field->image[0] ?? null,
+            'booking_date'  => $this->selectedDate,
+            'start_time'    => $this->selectedTimeSlots[0],
+            'end_time'      => Carbon::parse($this->selectedTimeSlots[0])->addHour()->format('H:i:s'),
+            'price'         => $this->totalPrice, 
+        ];
+
+        $cartId = uniqid('cart_');
+        session()->put('cart.' . $cartId, $cartItem);
+
+        return $this->redirect(route('cart.index'), navigate: true);
+    }
 
     public function render()
     {

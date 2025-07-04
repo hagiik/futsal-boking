@@ -9,6 +9,7 @@ use Livewire\Volt\Component;
 new class extends Component {
     public string $name = '';
     public string $email = '';
+    public string $phone = '';
 
     /**
      * Mount the component.
@@ -37,6 +38,8 @@ new class extends Component {
                 'max:255',
                 Rule::unique(User::class)->ignore($user->id)
             ],
+
+            'phone' => ['required', 'regex:/^[0-9]{10,16}$/'],
         ]);
 
         $user->fill($validated);
@@ -58,7 +61,7 @@ new class extends Component {
         $user = Auth::user();
 
         if ($user->hasVerifiedEmail()) {
-            $this->redirectIntended(default: route('dashboard', absolute: false));
+            $this->redirectIntended(default: route('home', absolute: false));
 
             return;
         }
@@ -98,6 +101,7 @@ new class extends Component {
                     </div>
                 @endif
             </div>
+            <flux:input wire:model="phone" :label="__('Nomor Telephone')" type="number" required autofocus autocomplete="phone" />
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">

@@ -96,4 +96,21 @@
             }
         }
     }
+
+    @if(isset($snapToken))
+            < script >
+                var snapToken = "{{ $snapToken }}";
+        snap.pay(snapToken, {
+            onSuccess: function (result) {
+                window.location.href = '/booking/success/' + result.order_id;
+            },
+            onPending: function (result) {
+                window.location.href = '/booking/pending/' + result.order_id;
+            },
+            onError: function (result) {
+                alert('Pembayaran gagal.');
+            }
+        });
+            </>
+    @endif
     </script>

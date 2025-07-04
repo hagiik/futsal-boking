@@ -14,19 +14,5 @@
     <x-layouts.app.footer/>
 
 @include('partials.script')
-<script>
-  snap.pay(snapToken, {
-    onSuccess: function (result) {
-      window.location.href = '/booking/success/' + result.order_id;
-    },
-    onPending: function (result) {
-      window.location.href = '/booking/success/' + result.order_id;
-    },
-    onError: function (result) {
-      alert("Pembayaran gagal.");
-    }
-  });
-
-</script>
 </body>
 </html>

@@ -17,10 +17,10 @@ $field = $fields[0] ?? null;
 
         @forelse ($fields as $field)
                     @php
-            // Decode image jika masih string (meski sudah cast, data di DB bisa double-encoded)
-            $images = is_array($field->image) ? $field->image : json_decode($field->image, true);
-            $imageUrl = $images[0] ?? 'images/placeholder.jpg';
-            $imageSrc = Str::startsWith($imageUrl, 'http') ? $imageUrl : asset('storage/' . $imageUrl);
+    // Decode image jika masih string (meski sudah cast, data di DB bisa double-encoded)
+    $images = is_array($field->image) ? $field->image : json_decode($field->image, true);
+    $imageUrl = $images[0] ?? 'images/placeholder.jpg';
+    $imageSrc = Str::startsWith($imageUrl, 'http') ? $imageUrl : asset('storage/' . $imageUrl);
                     @endphp
 
                     <div class="lg:col-span-3">
@@ -30,7 +30,7 @@ $field = $fields[0] ?? null;
                                     <div class="swiper-wrapper">
                                         @foreach($images as $img)
                                             @php
-                    $imgSrc = Str::startsWith($img, 'http') ? $img : asset('storage/' . $img);
+            $imgSrc = Str::startsWith($img, 'http') ? $img : asset('storage/' . $img);
                                             @endphp
                                             <div class="swiper-slide">
                                                 <img src="{{ $imgSrc }}" alt="{{ $field->name }}"
@@ -100,4 +100,5 @@ $field = $fields[0] ?? null;
 
         </div>
     </div>
+    
 </x-layouts.app.mobile>

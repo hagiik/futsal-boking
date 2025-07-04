@@ -34,7 +34,6 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Lime,
             ])
             // ->font('Roboto')
-            ->brandName('Lapangan Olahraga')
             ->brandLogo(asset('images/GilSports1.png'))
             ->favicon(asset('images/GilSports.svg'))
             ->sidebarCollapsibleOnDesktop()
@@ -66,7 +65,8 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make(),
                 ActivitylogPlugin::make()
-                    ->navigationGroup('Manajemen Pengguna'),
+                    ->navigationGroup('Manajemen Pengguna')
+                    ->navigationIcon('heroicon-o-table-cells'),
             ])
             ->authMiddleware([
                 Authenticate::class,

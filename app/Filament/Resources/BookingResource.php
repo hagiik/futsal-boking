@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 
 class BookingResource extends Resource
 {
@@ -195,13 +196,13 @@ class BookingResource extends Resource
                     ->formatStateUsing(fn ($state) => ucfirst($state))
                     ->icon(fn ($state) => match ($state) {
                         'qris' => 'heroicon-o-device-phone-mobile',
-                        'transfer' => 'heroicon-o-arrow-path',
+                        'midtrans' => 'heroicon-o-arrow-path',
                         'cash' => 'heroicon-o-banknotes',
                         default => 'heroicon-o-question-mark-circle',
                     })
                     ->color(fn ($state) => match ($state) {
                         'qris' => 'success',
-                        'transfer' => 'info',
+                        'midtrans' => 'info',
                         'cash' => 'warning',
                         default => 'secondary',
                     })
@@ -273,10 +274,10 @@ class BookingResource extends Resource
 
                         return redirect()->away("https://wa.me/$whatsapp?text=" . urlencode($message));
                     }),
-
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                ActivityLogTimelineTableAction::make('Activities')
+                // ActivityLogTimelineTableAction::make('Activities')
 
             ])
             ->bulkActions([
@@ -304,6 +305,26 @@ class BookingResource extends Resource
     {
         return static::getModel()::count();
     }
+
+    // public static function getPermissionPrefixes(): array
+    // {
+    //     return [
+    //         'view',
+    //         'view_any',
+    //         'create',
+    //         'update',
+    //         'restore',
+    //         'restore_any',
+    //         'replicate',
+    //         'reorder',
+    //         'delete',
+    //         'delete_any',
+    //         'force_delete',
+    //         'force_delete_any',
+    //         'lock',
+    //         'Activities',
+    //     ];
+    // }
 
     public static function getPages(): array
     {

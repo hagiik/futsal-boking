@@ -17,63 +17,81 @@
                         <p class="text-sm text-gray-500 dark:text-gray-400">{{ $booking->field->category?->name ?? 'Olahraga' }}</p>
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $booking->field->name }}</h2>
                     
-                        <div class="mt-6 grid grid-cols-3 gap-y-4 text-center">
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Status</p>
-                                <p @class([
-                                    'font-bold text-lg',
-                                    'text-yellow-600' => $booking->status === 'pending',
-                                    'text-blue-600' => $booking->status === 'confirmed',
-                                    'text-green-600' => $booking->status === 'completed',
-                                    'text-red-600' => $booking->status === 'cancelled',
-                                ])>{{ ucfirst($booking->status) }}</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Tanggal</p>
-                            <p class="font-bold text-lg text-gray-800 dark:text-gray-200">
-                                {{ \Carbon\Carbon::parse($booking->booking_date)->format('d M') }}
-                            </p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Tahun</p>
-                                <p class="font-bold text-lg text-gray-800 dark:text-gray-200">
-                                    {{ \Carbon\Carbon::parse($booking->booking_date)->format('Y') }}
-                                </p>
+                            <div class="mt-6 grid grid-cols-3 gap-y-4 text-center">
+                                <div>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Status</p>
+                                    <p @class([
+                                        'font-bold text-lg',
+                                        'text-yellow-600' => $booking->status === 'pending',
+                                        'text-blue-600' => $booking->status === 'confirmed',
+                                        'text-green-600' => $booking->status === 'completed',
+                                        'text-red-600' => $booking->status === 'cancelled',
+                                    ])>{{ ucfirst($booking->status) }}
+                                    </p>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Harga</p>
-                                <p class="font-bold text-lg text-gray-800 dark:text-gray-200">
-                                    Rp{{ number_format($booking->total_price / 1000, 0) }}K</p>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Mulai</p>
-                                <p class="font-bold text-lg text-gray-800 dark:text-gray-200">
-                                    {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }}
-                                </p>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Selesai</p>
-                                <p class="font-bold text-lg text-gray-800 dark:text-gray-200">
-                                    {{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }}
-                                </p>
-                                </div>
-                                </div>
-                                </div>
-                                
-                                <div class="relative h-4">
-                                    <div class="absolute left-0 right-0 top-1/2 h-px border-t-2 border-dashed border-gray-300"></div>
-                                <div class="absolute left-0 top-1/2 w-4 h-8 bg-lime-500 dark:bg-lime-500 rounded-r-full -translate-y-1/2"></div>
-                                <div class="absolute right-0 top-1/2 w-4 h-8 bg-lime-500 dark:bg-lime-500 rounded-l-full -translate-y-1/2">
-                                </div>
-                                </div>
-                                
-                                <div class="p-6">
-                                    <div class="grid grid-cols-2 gap-y-4 text-sm sm:text-base">
-                                        <div class="font-semibold text-gray-900 dark:text-white">Nama</div>
-                                        <div class="font-mono text-gray-500 dark:text-gray-400">{{ $booking->user->name }}</div>
-                                
-                                        <div class="font-semibold text-gray-900 dark:text-white">Booking Number</div>
-                                        <div class="font-mono text-gray-500 dark:text-gray-400">{{ $booking->booking_number }}</div>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Pembayaran</p>
+                                    <p @class([
+                                        'font-bold text-lg',
+                                        'text-yellow-600' => $booking->payment->status === 'pending',
+                                        'text-blue-600' => $booking->payment->status === 'confirmed',
+                                        'text-green-600' => $booking->payment->status === 'ditempat',
+                                        'text-red-600' => $booking->payment->status === 'cancelled',
+                                        'text-blue-800' => $booking->payment->status === 'completed',
+                                    ])>
+                                        @php
+                                            $statusMap = [
+                                                'pending' => 'Menunggu Pembayaran',
+                                                'confirmed' => 'Dikonfirmasi',
+                                                'ditempat' => 'Bayar di Tempat',
+                                                'cancelled' => 'Dibatalkan',
+                                                'completed' => 'Selesai',
+                                            ];
+                                        @endphp
+                                    
+                                        {{ $statusMap[$booking->payment->status] ?? ucfirst($booking->payment->status) }}
+                                    </p>
+                                    </div>
+                                    
+                                    <div>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Tahun</p>
+                                        <p class="font-bold text-lg text-gray-800 dark:text-gray-200">
+                                            {{ \Carbon\Carbon::parse($booking->booking_date)->format('d M Y') }}
+                                            </p>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Harga</p>
+                                                <p class="font-bold text-lg text-gray-800 dark:text-gray-200">
+                                                    Rp{{ number_format($booking->total_price / 1000, 0) }}K</p>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Mulai</p>
+                                                <p class="font-bold text-lg text-gray-800 dark:text-gray-200">
+                                                    {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Selesai</p>
+                                                <p class="font-bold text-lg text-gray-800 dark:text-gray-200">
+                                                    {{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }}
+                                                </p>
+                                            </div>
+                                            </div>
+                                            </div>
+                                            
+                                            <div class="relative h-4">
+                                                <div class="absolute left-0 right-0 top-1/2 h-px border-t-2 border-dashed border-gray-300"></div>
+                                                <div class="absolute left-0 top-1/2 w-4 h-8 bg-lime-500 dark:bg-lime-500 rounded-r-full -translate-y-1/2"></div>
+                                                <div class="absolute right-0 top-1/2 w-4 h-8 bg-lime-500 dark:bg-lime-500 rounded-l-full -translate-y-1/2">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="p-6">
+                                            <div class="grid grid-cols-2 gap-y-4 text-xs sm:text-base">
+                                                <div class="font-semibold text-xs text-gray-900 dark:text-white">Nama</div>
+                                                <div class="font-mono text-xs text-gray-500 dark:text-gray-400">{{ $booking->user->name }}</div>
+                                                <div class="font-semibold text-xs text-gray-900 dark:text-white">Booking Number</div>
+                                                <div class="font-mono text-xs text-gray-500 dark:text-gray-400">{{ $booking->booking_number }}</div>
                                     </div>
                                 </div>
                                 

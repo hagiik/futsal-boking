@@ -46,15 +46,6 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-16">
 
             <div class="flex flex-col justify-center">
-                
-                <div class="flex items-center gap-2" data-aos="fade-right">
-                    <button class="px-4 py-2 text-sm font-semibold rounded-full bg-lime-500 text-white">
-                        PEMILIK LAPANGAN
-                    </button>
-                    <button class="px-4 py-2 text-sm font-semibold rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition">
-                        PENYEWA
-                    </button>
-                </div>
 
                 <h2 class="mt-8 text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white" data-aos="fade-right"
                     data-aos-delay="100">
@@ -77,23 +68,33 @@
 
             <div class="relative flex items-start gap-4 md:gap-6" data-aos="zoom-in-up">
                 <div class="flex flex-col gap-4 md:gap-6 w-1/2">
-                  <div class="h-56 w-full rounded-xl shadow-lg overflow-hidden" data-aos="zoom-in" data-aos-delay="400">
-                    <img src="{{ asset('https://plus.unsplash.com/premium_photo-1684713510655-e6e31536168d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') }}" alt="Venue 1" class="w-full h-auto object-cover rounded-xl shadow-md">
-                  </div>
+                    <div class="h-56 w-full rounded-xl shadow-lg overflow-hidden" data-aos="zoom-in" data-aos-delay="400">
+                        <img src="{{ asset('https://plus.unsplash.com/premium_photo-1684713510655-e6e31536168d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') }}"
+                            alt="Venue 1"
+                            class="w-full h-full object-cover rounded-xl shadow-md transition-transform duration-250 ease-in-out hover:scale-110">
+                        </div>
                   <div class="h-80 w-full rounded-xl shadow-lg overflow-hidden" data-aos="zoom-in" data-aos-delay="500">
-                    <img src="{{ asset('https://images.unsplash.com/photo-1620742820748-87c09249a72a?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') }}" alt="Venue 2" class="w-full h-auto object-cover rounded-xl shadow-md">
+                    <img src="{{ asset('https://images.unsplash.com/photo-1620742820748-87c09249a72a?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') }}"
+                        alt="Venue 2"
+                        class="w-full h-auto object-cover rounded-xl shadow-md transition-transform duration-250 ease-in-out hover:scale-110">
                   </div>
                   <div class="h-56 w-full rounded-xl shadow-lg overflow-hidden" data-aos="zoom-in" data-aos-delay="600">
-                    <img src="{{ asset('https://plus.unsplash.com/premium_photo-1684106553502-e4f80cac5964?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') }}" alt="Venue 3" class="w-full h-auto object-cover rounded-xl shadow-md">
+                    <img src="{{ asset('https://plus.unsplash.com/premium_photo-1684106553502-e4f80cac5964?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') }}"
+                        alt="Venue 3"
+                        class="w-full h-auto object-cover rounded-xl shadow-md transition-transform duration-250 ease-in-out hover:scale-110">
                   </div>
                 </div>
                 
                 <div class="flex flex-col gap-4 md:gap-6 w-1/2 mt-12 md:mt-16">
                   <div class="h-80 w-full rounded-xl shadow-lg overflow-hidden" data-aos="zoom-in" data-aos-delay="400">
-                    <img src="{{ asset('https://plus.unsplash.com/premium_photo-1684106554190-dd5a5eaa8eba?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') }}" alt="Venue 4" class="w-full h-auto object-cover rounded-xl shadow-md">
+                    <img src="{{ asset('https://plus.unsplash.com/premium_photo-1684106554190-dd5a5eaa8eba?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') }}"
+                        alt="Venue 4"
+                        class="w-full h-auto object-cover rounded-xl shadow-md transition-transform duration-250 ease-in-out hover:scale-110">
                   </div>
                   <div class="h-56 w-full rounded-xl shadow-lg overflow-hidden" data-aos="zoom-in" data-aos-delay="500">
-                    <img src="{{ asset('https://images.unsplash.com/photo-1626721105368-a69248e93b32?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') }}" alt="Venue 6" class="w-full h-auto object-cover rounded-xl shadow-md">
+                    <img src="{{ asset('https://images.unsplash.com/photo-1626721105368-a69248e93b32?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') }}"
+                        alt="Venue 6"
+                        class="w-full h-auto object-cover rounded-xl shadow-md transition-transform duration-250 ease-in-out hover:scale-110">
                   </div>
                 </div>
 

@@ -18,7 +18,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasUuids, SoftDeletes, HasRoles, LogsActivity;
@@ -48,6 +48,8 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'phone',
         'email_verified_at',
+        'provider_name',
+        'provider_id',
     ];
 
     /**
@@ -110,7 +112,15 @@ class User extends Authenticatable implements FilamentUser
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly(['name', 'text']);
+        ->logOnly([
+            'name',
+            'email',
+            'password',
+            'phone',
+            'email_verified_at',
+            'provider_name',
+            'provider_id',
+        ]);
     }
 
     /**
