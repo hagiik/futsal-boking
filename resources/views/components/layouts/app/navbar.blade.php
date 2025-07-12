@@ -9,8 +9,9 @@
             <div class="hidden md:flex items-center ml-10 space-x-8">
                 <a href="{{route('lapangan')}}" class="block py-2 px-3 rounded-sm md:p-0
                         {{ request()->routeIs('lapangan') ? 'text-sm font-medium text-lime-700 underline decoration-lime-500 decoration-2 underline-offset-4 md:bg-transparent md:text-lime-500 md:dark:text-lime-500 dark:bg-lime-600 md:dark:bg-transparent' : 'text-sm font-medium text-gray-700 md:hover:text-lime-500 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent hover:underline hover:decoration-lime-500 hover:decoration-2 hover:underline-offset-4' }}">Cari lapangan</a>
-                <a href="#competitions" class="block py-2 px-3 rounded-sm md:p-0
-                        {{ request()->routeIs('#') ? 'text-sm font-medium text-lime-700 underline decoration-lime-500 decoration-2 underline-offset-4 md:bg-transparent md:text-lime-500 md:dark:text-lime-500 dark:bg-lime-600 md:dark:bg-transparent' : 'text-sm font-medium text-gray-700 md:hover:text-lime-500 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent hover:underline hover:decoration-lime-500 hover:decoration-2 hover:underline-offset-4' }}">Cari Kompetisi</a>
+                <a href="{{route('contact.index')}}"
+                    class="block py-2 px-3 rounded-sm md:p-0
+                                        {{ request()->routeIs('contact.index') ? 'text-sm font-medium text-lime-700 underline decoration-lime-500 decoration-2 underline-offset-4 md:bg-transparent md:text-lime-500 md:dark:text-lime-500 dark:bg-lime-600 md:dark:bg-transparent' : 'text-sm font-medium text-gray-700 md:hover:text-lime-500 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent hover:underline hover:decoration-lime-500 hover:decoration-2 hover:underline-offset-4' }}">Kontak</a>
                 <a href="#" class="block py-2 px-3 rounded-sm md:p-0
                         {{ request()->routeIs('#') ? 'text-sm font-medium text-lime-700 underline decoration-lime-500 decoration-2 underline-offset-4 md:bg-transparent md:text-lime-500 md:dark:text-lime-500 dark:bg-lime-600 md:dark:bg-transparent' : 'text-sm font-medium text-gray-700 md:hover:text-lime-500 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent hover:underline hover:decoration-lime-500 hover:decoration-2 hover:underline-offset-4' }}">Sparring</a>
                 <a href="#" class="block py-2 px-3 rounded-sm md:p-0
@@ -24,7 +25,7 @@
                 class="relative text-gray-600 dark:text-gray-300 hover:text-lime-600 dark:hover:text-lime-500">
                 {{-- Hitung jumlah item di cart dari session --}}
                 @php
-                    $cartCount = count(session('cart', []));
+$cartCount = count(session('cart', []));
                 @endphp
             
                 {{-- Ikon SVG untuk keranjang belanja --}}

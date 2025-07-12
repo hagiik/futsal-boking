@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LapanganController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ Route::get('/', function () {
 
 Route::get('/lapangan', [LapanganController::class, 'index'])->name('lapangan');
 Route::get('/lapangan/{slug}', [LapanganController::class, 'show'])->name('lapangan.show');
+
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/payment-success', [BookingController::class, 'afterPayment'])->name('after.payment');
 Route::get('/booking/success/{booking_number}', [BookingController::class, 'success'])->name('booking.success');

@@ -87,8 +87,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <!-- Social Login Buttons -->
     <div class="flex flex-col gap-4">
         <a href="{{ url('/auth/google/redirect') }}" type="button"
-            class="flex items-center justify-center gap-3 w-full border border-zinc-300 dark:border-zinc-700 rounded-lg py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
-            target="_blank">
+            class="flex items-center justify-center gap-3 w-full border border-zinc-300 dark:border-zinc-700 rounded-lg py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
             <img src="https://www.svgrepo.com/show/383910/google.svg" alt="Google" class="w-5 h-5" />
             {{ __('Masuk Dengan Google') }}
         </a>
