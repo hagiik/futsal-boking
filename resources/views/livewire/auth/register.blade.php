@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Membership;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +28,13 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         $validated['password'] = Hash::make($validated['password']);
 
+        $user = User::create($validated);
+
+        Membership::create([
+            'user_id' => $user->id,
+            'total_points' => 0,
+            'level' => 'basic',
+        ]);
         event(new Registered(($user = User::create($validated))));
 
         Auth::login($user);

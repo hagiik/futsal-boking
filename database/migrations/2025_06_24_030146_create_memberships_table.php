@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignUuid('user_id')->unique()->constrained()->cascadeOnDelete();
             $table->integer('total_points')->default(0);
-            $table->string('level')->default('basic');
+            // $table->boolean('level')->default('basic');
+            $table->enum('level', ['basic', 'silver', 'gold' , 'vip'])->default('basic');
             $table->timestamps();
             $table->softDeletes();
         });
     }
-
     /**
      * Reverse the migrations.
      */

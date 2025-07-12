@@ -1,43 +1,52 @@
 <x-layouts.app :title="__('Home')">
-    <div class="swiper hero-slider h-screen">
-    <div class="swiper-wrapper">
 
-        <div class="swiper-slide">
-            <section class="relative h-full bg-cover bg-center flex items-center" 
-                     style="background-image: url('https://ayo.co.id/assets/img/main-hero-image.jpg');">
-                <div class="absolute inset-0 bg-black/50"></div>
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="relative z-10 max-w-2xl">
-                        <h1 class="text-5xl font-bold text-white md:text-6xl lg:text-7xl leading-tight">
-                            Super Sport <br> Community App
-                        </h1>
-                        <p class="mt-6 text-lg text-gray-200 max-w-lg">
-                            Platform all-in-one untuk sewa lapangan, cari kawan sparring, atau cari kawan main bareng.
-                        </p>
-                        </div>
-                </div>
-            </section>
-        </div>
+<section class="h-screen relative bg-cover bg-center"
+    style="background-image: url('https://images.unsplash.com/photo-1630420598913-44208d36f9af?q=80&w=1625&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/50"></div>
+<div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-2 items-center w-full">
 
-        <div class="swiper-slide">
-             <section class="relative h-full bg-cover bg-center flex items-center" 
-                     style="background-image: url('https://images.unsplash.com/photo-1552667466-07770ae110d0?q=80&w=2070&auto=format&fit=crop');">
-                <div class="absolute inset-0 bg-black/50"></div>
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="relative z-10 max-w-2xl">
-                        <h1 class="text-5xl font-bold text-white md:text-6xl lg:text-7xl leading-tight">
-                            Temukan Lawan <br> Sparring Terbaik
-                        </h1>
-                        <p class="mt-6 text-lg text-gray-200 max-w-lg">
-                            Tantang dirimu dan tingkatkan permainanmu dengan komunitas olahraga terbesar.
-                        </p>
-                         </div>
+        <!-- Left Content -->
+        <div>
+            <h1 class="text-5xl font-bold text-white md:text-6xl lg:text-7xl leading-tight">
+                    Begin Your Workout Journey Here
+                    </h1>
+                    <p class="mt-6 text-lg text-gray-200 max-w-lg">
+                    Every great result starts with a single move. Let’s get started..
+                    </p>
+                <a href="#"
+                    class="mt-6 inline-block bg-lime-500 text-black font-semibold px-6 py-3 rounded-full shadow hover:bg-lime-600 transition">
+                    Discover More
+                </a>
+            </div>
+<!-- Right Glass Cards -->
+<div class="flex flex-col items-start gap-4 mt-10 lg:mt-0 lg:items-end">
+    <!-- Card 1 -->
+    <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 w-[300px] shadow-lg text-white">
+        <h3 class="text-xl font-semibold mb-2">Featured Gear</h3>
+        <p class="text-sm text-gray-200 mb-4">
+            Check out our top-rated fitness gear to help boost your training.
+        </p>
+        <a href="#" class="inline-block text-lime-400 font-medium hover:underline">
+            See More →
+        </a>
+    </div>
+
+                <!-- Card 2 -->
+                <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 w-[300px] shadow-lg text-white">
+                    <h3 class="text-xl font-semibold mb-2">Pro Tips</h3>
+                    <p class="text-sm text-gray-200 mb-4">
+                        Discover expert tips to stay motivated and consistent in your workouts.
+                    </p>
+                    <a href="#" class="inline-block text-lime-400 font-medium hover:underline">
+                        Read Tips →
+                    </a>
                 </div>
-            </section>
+            </div>
         </div>
-        
-        </div>
-</div>
+    </div>
+</section>
 
 
 <section class="bg-white dark:bg-zinc-900/50 py-16 sm:py-24">
@@ -57,7 +66,8 @@
                     Waktunya buat venue anda lebih dari sekadar venue...
                 </p>
 
-                <a href="#" class="mt-8 inline-flex items-center gap-2 text-lime-500 hover:text-lime-600 font-semibold transition group"
+                <a href="{{route('lapangan')}}"
+                    class="mt-8 inline-flex items-center gap-2 text-lime-500 hover:text-lime-600 font-semibold transition group"
                     data-aos="fade-up" data-aos-delay="300">
                     Lihat Selengkapnya
                         <svg class="w-6 h-6 transition-transform group-hover:translate-x-1"" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
