@@ -9,6 +9,8 @@ use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action as FormAction;
 use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
@@ -45,42 +47,58 @@ class FieldScheduleResource extends Resource
     {
         return 'Jadwal Lapangan'; 
     }
-    public static function form(Form $form): Form
-    {
-        return $form->schema([
+public static function form(Form $form): Form
+{
+    return $form->schema([
+         Section::make('Pilih lapangan')
+         ->schema([
             Select::make('field_id')
-                ->label('Lapangan')
-                ->relationship('field', 'name')
-                ->required(),
+                        ->label('Lapangan')
+                        ->relationship('field', 'name')
+                        ->required()
+                        ->columnSpanFull(), 
+         ]),
+        
 
-            CheckboxList::make('days')
-                ->label('Hari')
-                ->bulkToggleable()
-                ->options([
-                    'Monday' => 'Senin',
-                    'Tuesday' => 'Selasa',
-                    'Wednesday' => 'Rabu',
-                    'Thursday' => 'Kamis',
-                    'Friday' => 'Jumat',
-                    'Saturday' => 'Sabtu',
-                    'Sunday' => 'Minggu',
-                ])
-                ->required(),
+        // Gunakan Section untuk mengelompokkan field terkait
+        Section::make('Pengaturan Jadwal dan Harga')
+            ->description('Atur hari, jam operasional, dan harga sewa untuk lapangan ini.')
+            ->schema([
+                CheckboxList::make('days')
+                    ->label('Hari Tersedia')
+                    ->bulkToggleable()
+                    ->options([
+                        'Monday' => 'Senin',
+                        'Tuesday' => 'Selasa',
+                        'Wednesday' => 'Rabu',
+                        'Thursday' => 'Kamis',
+                        'Friday' => 'Jumat',
+                        'Saturday' => 'Sabtu',
+                        'Sunday' => 'Minggu',
+                    ])
+                    ->columns(4)
+                    ->required(),
+                
+                // Gunakan Grid di dalam Section
+                Grid::make(3)->schema([
+                    TimePicker::make('start_time')
+                        ->label('Jam Buka')
+                        ->required(),
 
-            TimePicker::make('start_time')
-                ->label('Jam Buka')
-                ->required(),
+                    TimePicker::make('end_time')
+                        ->label('Jam Tutup')
+                        ->required(),
 
-            TimePicker::make('end_time')
-                ->label('Jam Tutup')
-                ->required(),
-
-            TextInput::make('price_per_hour')
-                ->label('Harga per Jam')
-                ->numeric()
-                ->required(),
-        ]);
-    }
+                    TextInput::make('price_per_hour')
+                        ->label('Harga per Jam')
+                        ->numeric()
+                        ->prefix('Rp')
+                        ->required(),
+                ]),
+            ])
+            ->columns(2), // Atur layout di dalam Section menjadi 2 kolom
+    ]);
+}
 
 
     public static function table(Table $table): Table

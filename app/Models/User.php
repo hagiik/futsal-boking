@@ -99,10 +99,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         });
     }
 
-    public function membership()
-    {
-        return $this->hasOne(Membership::class);
-    }
 
     public function bookings()
     {
@@ -123,14 +119,4 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         ]);
     }
 
-    /**
-     * Get the user's initials
-     */
-    // public function initials(): string
-    // {
-    //     return Str::of($this->name)
-    //         ->explode(' ')
-    //         ->map(fn (string $name) => Str::of($name)->substr(0, 1))
-    //         ->implode('');
-    // }
 }

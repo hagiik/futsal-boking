@@ -14,6 +14,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class FasilitasResource extends Resource
 {
@@ -46,6 +47,9 @@ class FasilitasResource extends Resource
                     ->maxLength(255),
                 TextInput::make('icon')
                     ->label('Ikon')
+                    ->hint(new HtmlString('<a href="https://lucide.dev/" target="_blank">Ambil icon</a>'))
+                    ->hintIcon('heroicon-m-question-mark-circle')
+                    ->hintColor('primary')
                     ->required()
             ]);
     }

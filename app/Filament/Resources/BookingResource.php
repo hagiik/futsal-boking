@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers;
 use App\Models\Booking;
+use App\Models\FieldSchedule;
 use Carbon\Carbon;
 use Dom\Text;
 use Filament\Forms;
@@ -31,6 +32,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Section;
 
 class BookingResource extends Resource
 {
@@ -67,24 +70,112 @@ class BookingResource extends Resource
                             Select::make('field_id')
                                 ->label('Lapangan')
                                 ->relationship('field', 'name')
-                                ->searchable()
-                                ->required(),
+                                // ->searchable()
+                                ->required()
+                                ->reactive() // 1. JADIKAN REACTIVE
+                                // Reset waktu jika lapangan diubah
+                                ->afterStateUpdated(fn (callable $set) => [
+                                    $set('start_time', null),
+                                    $set('end_time', null),
+                                    $set('total_price', 0),
+                                ]),
                         ]),
 
                     Step::make('Jadwal')
-                        ->description('Tentukan tanggal dan jam main.')
-                        ->schema([
-                            DatePicker::make('booking_date')
-                                ->label('Tanggal Booking')
-                                ->required(),
-                            // Menggunakan Grid agar jam berdampingan
-                            Grid::make(2)->schema([
-                                TimePicker::make('start_time')->label('Jam Mulai')->required(),
-                                TimePicker::make('end_time')
-                                    ->label('Jam Selesai')
-                                    ->required()
-                                    ->reactive()
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                    ->description('Tentukan tanggal dan jam main.')
+                    ->schema([
+                        DatePicker::make('booking_date')
+                            ->label('Tanggal Booking')
+                            ->required()
+                            ->reactive()
+                            ->afterStateUpdated(fn (callable $set) => [
+                                $set('start_time', null),
+                                $set('end_time', null),
+                                $set('total_price', 0),
+                            ]),
+
+                        Grid::make(2)->schema([
+                            // GANTI: TimePicker menjadi Select
+                            Select::make('start_time')
+                                ->label('Jam Mulai')
+                                ->required()
+                                ->reactive()
+                                ->placeholder('Pilih jam mulai')
+                                ->options(function (callable $get) {
+                                    $fieldId = $get('field_id');
+                                    $bookingDate = $get('booking_date');
+                                    if (!$fieldId || !$bookingDate) {
+                                        return [];
+                                    }
+
+                                    $dayOfWeek = Carbon::parse($bookingDate)->format('l');
+                                    
+                                    // GANTI: dari ->first() menjadi ->get() untuk mengambil semua jadwal
+                                    $schedules = FieldSchedule::where('field_id', $fieldId)
+                                        ->where('day_of_week', $dayOfWeek)
+                                        ->orderBy('start_time') // Urutkan berdasarkan jam mulai
+                                        ->get();
+
+                                    if ($schedules->isEmpty()) {
+                                        return [];
+                                    }
+
+                                    $options = [];
+                                    // Loop melalui setiap jadwal yang ditemukan (pagi, siang, malam, dll)
+                                    foreach ($schedules as $schedule) {
+                                        $startTime = Carbon::parse($schedule->start_time);
+                                        $endTime = Carbon::parse($schedule->end_time);
+
+                                        // Membuat slot waktu per jam untuk setiap jadwal
+                                        while ($startTime < $endTime) {
+                                            $time = $startTime->format('H:i');
+                                            $options[$time] = $time;
+                                            $startTime->addHour();
+                                        }
+                                    }
+                                    return $options;
+                                })
+                                ->disabled(fn (callable $get) => !$get('field_id') || !$get('booking_date')),
+
+                            Select::make('end_time')
+                                ->label('Jam Selesai')
+                                ->required()
+                                ->reactive()
+                                ->placeholder('Pilih jam selesai')
+                                ->options(function (callable $get) {
+                                    $fieldId = $get('field_id');
+                                    $bookingDate = $get('booking_date');
+                                    $startTimeSelected = $get('start_time');
+                                    if (!$fieldId || !$bookingDate || !$startTimeSelected) {
+                                        return [];
+                                    }
+
+                                    $dayOfWeek = Carbon::parse($bookingDate)->format('l');
+                                    
+                                    // Cari jadwal spesifik yang sesuai dengan jam mulai yang dipilih
+                                    $schedule = FieldSchedule::where('field_id', $fieldId)
+                                        ->where('day_of_week', $dayOfWeek)
+                                        ->where('start_time', '<=', $startTimeSelected)
+                                        ->where('end_time', '>', $startTimeSelected)
+                                        ->first();
+
+                                    if (!$schedule) {
+                                        return [];
+                                    }
+
+                                    $options = [];
+                                    $startTime = Carbon::parse($startTimeSelected)->addHour();
+                                    $endTime = Carbon::parse($schedule->end_time);
+
+                                    while ($startTime <= $endTime) {
+                                        $time = $startTime->format('H:i');
+                                        $options[$time] = $time;
+                                        $startTime->addHour();
+                                    }
+                                    return $options;
+                                })
+                                ->disabled(fn (callable $get) => !$get('start_time'))
+                                ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                         $fieldId = $get('field_id');
                                         $bookingDate = $get('booking_date');
                                         $startTime = $get('start_time');
@@ -118,9 +209,9 @@ class BookingResource extends Resource
 
                                         $set('total_price', $duration * $schedule->price_per_hour);
                                     }),
+                        ]),
+                    ]),
 
-                                                    ]),
-                                                ]),
 
                     Step::make('Pembayaran & Status')
                         ->description('Konfirmasi status dan detail pembayaran.')
@@ -130,8 +221,8 @@ class BookingResource extends Resource
                                     ->label('Total Harga')
                                     ->numeric()
                                     ->prefix('Rp')
-                                    ->disabled() // agar user tidak bisa ubah manual
-                                    ->dehydrated(true), // agar disimpan ke database
+                                    ->disabled()
+                                    ->dehydrated(true),
 
                                 Select::make('status')
                                     ->label('Status Booking')
@@ -142,6 +233,40 @@ class BookingResource extends Resource
                                 ->label('Tandai jika notifikasi verifikasi sudah terkirim ke user')
                                 ->inline(false)
                                 ->default(false),
+
+                            // == MULAI TAMBAHAN KODE DI SINI ==
+                            Section::make('Detail Pembayaran')
+                                ->description('Isi detail pembayaran jika dilakukan saat booking.')
+                                ->schema([
+                                    Select::make('payment_method')
+                                        ->label('Metode Pembayaran')
+                                        ->options([
+                                            'cash' => 'Tunai (di Tempat)',
+                                            'midtrans' => 'Transfer',
+                                        ])
+                                        ->required()
+                                        ->reactive(),
+                                        // ->mapped(false), // Field ini tidak ada di tabel bookings
+
+                                    Select::make('payment_status')
+                                        ->label('Status Pembayaran')
+                                        ->options([
+                                            'pending' => 'Pending',
+                                            'confirmed' => 'Lunas',
+                                            'ditempat' => 'Bayar di Tempat',
+                                        ])
+                                        ->required()
+                                        ->reactive(),
+                                        // ->mapped(false), // Field ini tidak ada di tabel bookings
+
+                                    DateTimePicker::make('paid_at')
+                                        ->label('Dibayar Pada Tanggal')
+                                        // ->mapped(false) // Field ini tidak ada di tabel bookings
+                                        // Hanya muncul jika status pembayaran 'Lunas'
+                                        ->visible(fn ($get) => $get('payment_status') === 'confirmed'), 
+                                ])
+                                ->columns(2)
+
                         ]),
                 ])->columnSpanFull() // Pastikan wizard memakan lebar penuh
             ]);
@@ -182,7 +307,7 @@ class BookingResource extends Resource
                     ->color('warning')
                     ->time(),
                 SelectColumn::make('status')
-                    ->label('Status')
+                    ->label('Status Booking')
                     ->options([
                         'pending' => 'Pending',
                         'confirmed' => 'Confirmed',
@@ -207,6 +332,27 @@ class BookingResource extends Resource
                         default => 'secondary',
                     })
                     ->sortable(),
+                TextColumn::make('payment.status')
+                    ->label('Status Pembayaran')
+                    ->searchable()
+                    ->badge()
+                    ->icon(fn ($state) => match ($state) {
+                        'pending' => 'heroicon-o-device-phone-mobile',
+                        'confirmed' => 'heroicon-o-arrow-path',
+                        'ditempat' => 'heroicon-o-banknotes',
+                        'cancelled' => 'heroicon-o-banknotes',
+                        'completed' => 'heroicon-o-banknotes',
+                        default => 'heroicon-o-question-mark-circle',
+                    })
+                    // 'pending', 'confirmed', 'ditempat' , 'cancelled', 'completed'
+                    ->color(fn ($state) => match ($state) {
+                        'pending' => 'gray',
+                        'confirmed' => 'info',
+                        'ditempat' => 'warning',
+                        'cancelled' => 'warning',
+                        'completed' => 'success',
+                        default => 'secondary',
+                    }),
                 TextColumn::make('total_price')
                     ->label('Total')
                     ->badge()
@@ -274,7 +420,7 @@ class BookingResource extends Resource
 
                         return redirect()->away("https://wa.me/$whatsapp?text=" . urlencode($message));
                     }),
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 // ActivityLogTimelineTableAction::make('Activities')
@@ -305,26 +451,6 @@ class BookingResource extends Resource
     {
         return static::getModel()::count();
     }
-
-    // public static function getPermissionPrefixes(): array
-    // {
-    //     return [
-    //         'view',
-    //         'view_any',
-    //         'create',
-    //         'update',
-    //         'restore',
-    //         'restore_any',
-    //         'replicate',
-    //         'reorder',
-    //         'delete',
-    //         'delete_any',
-    //         'force_delete',
-    //         'force_delete_any',
-    //         'lock',
-    //         'Activities',
-    //     ];
-    // }
 
     public static function getPages(): array
     {
